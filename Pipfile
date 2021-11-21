@@ -12,6 +12,8 @@ pynput = "*"
 autopep8 = "*"
 pylint = "*"
 pytest = "*"
+pipenv-setup = "*"
+setuptools = "*"
 
 [requires]
 python_version = "3.9"

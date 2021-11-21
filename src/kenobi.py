@@ -4,11 +4,13 @@ And argument parser.
 """
 import asyncio
 from argparse import ArgumentParser
+from os import path
+from shutil import rmtree
 
-from helpers.websocket_server import WebsocketServer
+from websocket_server import WebsocketServer
 
 
-class Main:
+class Kenobi:
     """
     Class Main which contains the main function.
     And argument parser.
@@ -20,6 +22,7 @@ class Main:
         """
         self.debug = False
         self.background = True
+        self.logs = False
         self.main()
 
     @staticmethod
@@ -27,33 +30,39 @@ class Main:
         """
         Parse the arguments.
         Arguments:
-            Run in background:
-                -b, --background
-            Run in debug mode:
-                -d, --debug
+            Delete logs: (action delete logs)
+                -l, --logs
         """
         parser = ArgumentParser(description="Kenobi Server")
         # add --background and --debug flags default to False
-
-        parser.add_argument("-b", "--background", action="store_true",
-                            help="Run in background")
-        parser.add_argument("-d", "--debug", action="store_true",
-                            default=False, help="Run in debug mode")
+        parser.add_argument("-l", "--logs", action="store_true",
+                            default=False, help="Delete logs")
         return parser.parse_args()
+
+    def delete_logs(self):
+        """
+        Delete logs folder
+        """
+        print("Deleting logs...")
+        # Logs are stored in ~/.kenobi/logs
+        # Delete logs folder entirely
+        rmtree(path.expanduser("~/.kenobi/logs"))
+        print("Done!")
 
     def main(self):
         """
         Main function.
         """
         args = self.parser()
-        if args.background:
-            self.background = True
-        if args.debug:
-            self.debug = True
+        self.logs = args.logs
+
+        if self.logs:
+            self.delete_logs()
+            return
 
         WebsocketServer(debug=self.debug)
         asyncio.get_event_loop().run_forever()
 
 
 if __name__ == "__main__":
-    Main()
+    Kenobi()

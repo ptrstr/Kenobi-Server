@@ -6,12 +6,13 @@ import asyncio
 
 import websockets
 
-from .custom_logger import CustomLogger
-from .emulator import Emulator
-from .message_parser import MessageParser as mp
+from custom_logger import CustomLogger
+from emulator import Emulator
+from message_parser import MessageParser as mp
 
 HOST = "0.0.0.0"
 PORT = 9999
+
 
 class WebsocketServer:
     """
