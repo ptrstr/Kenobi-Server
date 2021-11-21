@@ -66,3 +66,12 @@ To help others who are struggling with writing code that commnunicates with betw
    
 
 > The opensource desktop app is CLI based for now keeping it's resource usage as minimum as possible.
+
+---
+
+### Future of Kenobi
+> Kenobi iOS and iPadOS app will be launched in upcoming months
+> 
+> Kenobi watchOS app will be opensourced along side their iOS counter parts in the upcoming months.
+> 
+> Expect more opensource and transparency!!!
