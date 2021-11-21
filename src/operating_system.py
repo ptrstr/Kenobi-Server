@@ -4,7 +4,7 @@ Find out what operating system is running.
 
 import platform
 
-from .custom_logger import CustomLogger
+from custom_logger import CustomLogger
 
 
 class OperatingSystem:
@@ -13,13 +13,17 @@ class OperatingSystem:
     """
 
     def __init__(self) -> None:
-        self.logger = CustomLogger("OperatingSystem")
+        self.logger = CustomLogger(self.__class__.__name__)
         self.platform = platform.system()
         self.is_supported_os()
 
     def __str__(self) -> str:
+        """
+        Returns the operating system name as a string.
+        instead of Object Address
+        """
         return self.platform
-        
+
     def is_supported_os(self):
         """
         Check if the operating system is any OS.
