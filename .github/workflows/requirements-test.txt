@@ -3,4 +3,3 @@ websockets
 playsound
 pytest
 pylint
-setuptools
