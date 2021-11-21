@@ -8,7 +8,7 @@ Download the apple watch app to get started.
 
 <a href="https://apps.apple.com/us/app/kenobi/id1595469125"><img src="https://raw.githubusercontent.com/Aayush9029/Kenobi-Server/main/readme-assets/download-appstore-icon.png" width="150px"></a>
 
-![Apple watch image with kenobi app running](https://aayush9029.github.io/KenobiSite/img/mainresize.png)
+![Apple watch image with Kenobi app running](https://aayush9029.github.io/KenobiSite/img/mainresize.png)
 
 ---
 
@@ -59,7 +59,7 @@ To help others who are struggling with writing code that commnunicates with betw
     - Power off
    
   - Launch apps
-    - MACOS
+    - MacOS
       - FaceTime, Messages, Mail, Music, Notes, Safari, System Pref, Apple TV, Youtube
     - Windows / Linux
       - TBD
