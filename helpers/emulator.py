@@ -8,19 +8,23 @@ from pynput.keyboard import Controller, Key
 
 from helpers.operating_system import OperatingSystem
 
+from .custom_logger import CustomLogger
+
 
 class Emulator:
     """
     Class which emulates a key presses, controls media playback
     """
+
     def __init__(self):
         """
         Initialize the key controller
         And valid key dictionaries
         """
+        self.logger = CustomLogger(self.__class__.__name__)
         self.operating_system = OperatingSystem()
         self.keyboard = Controller()
-        self.vaildKeys = {
+        self.vaild_keys = {
             "left": Key.left,
             "right": Key.right,
             "up": Key.up,
@@ -36,23 +40,22 @@ class Emulator:
             "volumeup": Key.media_volume_up,
             "volumedown": Key.media_volume_down
         }
-    
-    def emulate_key(self, recievedKey: str):
+
+    def emulate_key(self, recieved_key: str):
         """
         Check if the key is valid, and if so
         Emulate the key using the keyboard controller
         """
-        if recievedKey in self.vaildKeys:
-            self.keyboard.press(self.vaildKeys[recievedKey])
+        if recieved_key in self.vaild_keys:
+            self.keyboard.press(self.vaild_keys[recieved_key])
         else:
-            # TODO: Add error handling
-            print(f"Invalid key to emulate {recievedKey}")
+            self.logger.error(f"Invalid key {recieved_key}")
 
     def launch_app(self, app: str):
-        # TODO: Launch apps for other OSs
         """
         Launch the app using the system command
         """
+        # TEST Launch apps for other OSs
         if self.operating_system == "linux":
             system(f"xdg-open {app}")
         elif self.operating_system == "windows":
@@ -60,18 +63,19 @@ class Emulator:
         elif self.operating_system == "mac":
             system(f"open -a {app}")
 
-    def ping(self, value):
+    @staticmethod
+    def ping(value):
         """
         Play the ping sound ping_sound.wav
         """
         if value == "hello":
-            # TODO: add hello.wav file and play it
+            # add hello.wav file and play it
             playsound("ping_sound.wav")
         elif value == "ping":
             playsound("ping_sound.wav")
         else:
             print(f"Invalid ping option {value}")
-        
+
     def launch_site(self, url):
         """
         Launch the site using the system command
@@ -82,7 +86,7 @@ class Emulator:
             system(f"start {url}")
         elif self.operating_system == "mac":
             system(f"open -a {url}")
-    
+
     def power_option(self, value):
         """
         Emulate the power option
@@ -109,7 +113,7 @@ class Emulator:
             system("shutdown -s")
         elif self.operating_system == "mac":
             system("shutdown -h now")
-    
+
     def logout(self):
         """
         Logout of the current session
@@ -120,7 +124,7 @@ class Emulator:
             system("shutdown -l")
         elif self.operating_system == "mac":
             system("shutdown -l")
-    
+
     def restart(self):
         """
         Restart the computer
@@ -142,7 +146,8 @@ class Emulator:
             system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
         elif self.operating_system == "mac":
             system("pmset sleepnow")
-        
+
+
 if __name__ == "__main__":
     key = Emulator()
     key.emulate_key("volumeUp")
