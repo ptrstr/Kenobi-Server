@@ -2,7 +2,9 @@
 Main application file with the main function.
 And argument parser.
 """
+import asyncio
 from argparse import ArgumentParser
+
 from helpers.websocket_server import WebsocketServer
 
 
@@ -48,6 +50,10 @@ class Main:
             self.background = True
         if args.debug:
             self.debug = True
-        else:
-            # Run in foreground
-            WebsocketServer(debug=self.debug)
+
+        WebsocketServer(debug=self.debug)
+        asyncio.get_event_loop().run_forever()
+
+
+if __name__ == "__main__":
+    Main()
