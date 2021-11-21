@@ -13,6 +13,7 @@ from .message_parser import MessageParser as mp
 HOST = "0.0.0.0"
 PORT = 9999
 
+
 class WebsocketServer:
     """
     Class for handling the websocket server and executing the commands
