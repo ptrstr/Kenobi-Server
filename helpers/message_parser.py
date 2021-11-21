@@ -1,4 +1,6 @@
-# Parses messages from the client and returns the appropriate response
+"""
+Parses messages from the client and returns the appropriate response
+"""
 
 class MessageParser:
     """
@@ -24,7 +26,7 @@ class MessageParser:
         Returns:
             key: the key of the message (PING)
         """
-        message.split(':')[0]
+        return message.split(':')[0]
 
     def extract_value(self, message):
         """
@@ -34,7 +36,7 @@ class MessageParser:
         Returns:
             value: the value of the message (hello)
         """
-        message.split(':')[1]
+        return message.split(':')[1]
 
     def validate_key(self, key):
         """
@@ -56,11 +58,10 @@ class MessageParser:
             if self.validate_key(key):
                 return key, value
             else:
-                return None, None
+                raise ValueError(f"Invalid key: {key}")
         else:
-            print(f"Invalid data received: {message} LENERROR {message.split(':')}")
-            return None, None
-    
+            raise ValueError(f"Invalid data received: {message}")
+
     def extract_x_y(self, value):
         """
         Returns the x and y coordinates of the mouse
