@@ -10,7 +10,7 @@ class MessageParser:
     """
 
     def __init__(self):
-        self.logger = CustomLogger('MessageParser')
+        self.logger = CustomLogger(self.__class__.__name__)
         self.keys = [
             'PING',
             "KEY",

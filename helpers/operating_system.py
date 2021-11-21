@@ -13,7 +13,7 @@ class OperatingSystem:
     """
 
     def __init__(self) -> None:
-        self.logger = CustomLogger("OperatingSystem")
+        self.logger = CustomLogger(self.__class__.__name__)
         self.platform = platform.system()
         self.is_supported_os()
 
