@@ -1,12 +1,14 @@
 """
 Parses messages from the client and returns the appropriate response
 """
+from custom_logger import CustomLogger
 
 class MessageParser:
     """
     Parse raw messages received from the client
     """
     def __init__(self):
+        self.logger = CustomLogger('MessageParser')
         self.keys = [
             'PING',
             "KEY",
@@ -58,8 +60,10 @@ class MessageParser:
             if self.validate_key(key):
                 return key, value
             else:
+                self.logger.error(f"Invalid key: {key}")
                 raise ValueError(f"Invalid key: {key}")
         else:
+            self.logger.error(f"Invalid message: {message}")
             raise ValueError(f"Invalid data received: {message}")
 
     def extract_x_y(self, value):
@@ -70,6 +74,9 @@ class MessageParser:
         Returns:
             x: the x coordinate (-13.0, 0.0)
         """
-        x = value.split('@')[0]
-        y = value.split('@')[1]
-        return x, y
+        if '@' in value:
+            x, y = value.split('@')
+            return x, y
+        else:
+            self.logger.error(f"Invalid data received: {value}")
+            raise ValueError(f"Invalid data received: {value}")

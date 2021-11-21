@@ -6,6 +6,8 @@ import asyncio
 
 import websockets
 
+from custom_logger import CustomLogger
+from emulator import Emulator
 from message_parser import MessageParser as mp
 
 
@@ -13,8 +15,12 @@ class WebsocketServer:
     """
     Class for handling the websocket server and executing the commands
     """
-    def __init__(self) -> None:
+    def __init__(self, debug: bool = False) -> None:
+        self.debug = debug
+
         self.parser = mp()
+        self.emulator = Emulator()
+        self.logger = CustomLogger("WebsocketServer")
         # Server settings (constants)
         self.host = "0.0.0.0"
         self.port = 9999
@@ -30,7 +36,7 @@ class WebsocketServer:
         """
         Start the websocket server and listen for connections
         """
-        print(f"Starting Websocket server...@ {self.host}:{self.port}")
+        self.logger.info(f"Starting websocket server @ {self.host}:{self.port}")
         self.server = await websockets.serve(self.handler, self.host, self.port)
 
     async def handler(self, websocket) -> None:
@@ -40,21 +46,31 @@ class WebsocketServer:
         self.connected = True
         self.connected_ip = websocket.remote_address[0]
         self.connected_port = websocket.remote_address[1]
-        if self.connected:
-            pass
-        else:
-            print(f"Websocket connected from {self.connected_ip}:{self.connected_port}")
+        self.logger.info(f"Client connected @ {self.connected_ip}:{self.connected_port}")
+
         while True:
             try:
                 message = await websocket.recv()
                 try:
                     key, value = self.parser.parse(message)
                     print(f"Parsed: {key}:{value}")
+                    if key == "LAUNCHAPP":
+                        self.emulator.launch_app(value)
+                    elif key == "PING":
+                        self.emulator.ping(value)
+                    elif key == "SITE":
+                        self.emulator.launch_site(value)
+                    elif key == "POWER":
+                        self.emulator.power_option(value)
+                    elif key == "MEDIA" or key == "KEY":
+                        self.emulator.emulate_key(key, value)
+                    else:
+                        self.logger.error(f"Invalid key: {key}")
                 except ValueError as error:
-                    # print(f"Error: {error}")
-                    print("...")
+                    self.logger.error(f"Invalid message: {error}")
+
             except websockets.exceptions.ConnectionClosed:
-                print("Websocket connection closed")
+                self.logger.info(f"Client disconnected @ {self.connected_ip}:{self.connected_port}")
                 self.connected = False
                 self.connected_ip = None
                 self.connected_port = None
