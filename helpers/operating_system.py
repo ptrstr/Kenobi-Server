@@ -17,6 +17,9 @@ class OperatingSystem:
         self.platform = platform.system()
         self.is_supported_os()
 
+    def __str__(self) -> str:
+        return self.platform
+        
     def is_supported_os(self):
         """
         Check if the operating system is any OS.

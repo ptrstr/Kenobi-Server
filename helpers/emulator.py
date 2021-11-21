@@ -1,6 +1,7 @@
 """
 Key emulating class
 """
+import webbrowser
 from os import system
 
 from playsound import playsound
@@ -55,13 +56,20 @@ class Emulator:
         """
         Launch the app using the system command
         """
+        if app.endswith(".com"):
+            self.launch_site(app)
+        else:
         # TEST Launch apps for other OSs
-        if self.operating_system == "linux":
-            system(f"xdg-open {app}")
-        elif self.operating_system == "windows":
-            system(f"start {app}")
-        elif self.operating_system == "mac":
-            system(f"open -a {app}")
+            if self.operating_system.platform== "Linux":
+                system(f"xdg-open {app}")
+            elif self.operating_system.platform== "Windows":
+                system(f"start {app}")
+            elif self.operating_system.platform == "Darwin":
+                print("opening in mac")
+                system(f"open -a {app}")
+            else:
+                print(f"Invalid OS \"{self.operating_system}\"")
+
 
     @staticmethod
     def ping(value):
@@ -70,9 +78,9 @@ class Emulator:
         """
         if value == "hello":
             # add hello.wav file and play it
-            playsound("ping_sound.wav")
+            playsound("assets/ping_sound.wav")
         elif value == "ping":
-            playsound("ping_sound.wav")
+            playsound("assets/ping_sound.wav")
         else:
             print(f"Invalid ping option {value}")
 
@@ -80,12 +88,7 @@ class Emulator:
         """
         Launch the site using the system command
         """
-        if self.operating_system == "linux":
-            system(f"xdg-open {url}")
-        elif self.operating_system == "windows":
-            system(f"start {url}")
-        elif self.operating_system == "mac":
-            system(f"open -a {url}")
+        webbrowser.open_new(url=f"https://{url}")
 
     def power_option(self, value):
         """
@@ -107,47 +110,48 @@ class Emulator:
         """
         Shutdown the computer depending on the OS
         """
-        if self.operating_system == "linux":
+        if self.operating_system.platform == "Linux":
             system("shutdown -h now")
-        elif self.operating_system == "windows":
+        elif self.operating_system.platform == "Windows":
             system("shutdown -s")
-        elif self.operating_system == "mac":
+        elif self.operating_system.platform == "Darwin":
             system("shutdown -h now")
 
     def logout(self):
         """
         Logout of the current session
         """
-        if self.operating_system == "linux":
+        if self.operating_system.platform == "Linux":
             system("gnome-session-quit --force")
-        elif self.operating_system == "windows":
+        elif self.operating_system.platform == "Windows":
             system("shutdown -l")
-        elif self.operating_system == "mac":
+        elif self.operating_system.platform == "Darwin":
             system("shutdown -l")
+
 
     def restart(self):
         """
         Restart the computer
         """
-        if self.operating_system == "linux":
+        if self.operating_system.platform == "Linux":
             system("shutdown -r now")
-        elif self.operating_system == "windows":
+        elif self.operating_system.platform == "Windows":
             system("shutdown -r")
-        elif self.operating_system == "mac":
+        elif self.operating_system.platform == "Darwin":
             system("shutdown -r now")
 
     def sleep(self):
         """
         Sleep the computer
         """
-        if self.operating_system == "linux":
+        if self.operating_system.platform == "Linux":
             system("systemctl suspend")
-        elif self.operating_system == "windows":
+        elif self.operating_system.platform == "Windows":
             system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
-        elif self.operating_system == "mac":
+        elif self.operating_system.platform == "Darwin":
             system("pmset sleepnow")
 
 
 if __name__ == "__main__":
     key = Emulator()
-    key.emulate_key("volumeUp")
+    key.emulate_key("volumeup")
