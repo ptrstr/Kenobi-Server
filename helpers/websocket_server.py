@@ -6,29 +6,26 @@ import asyncio
 
 import websockets
 
-from custom_logger import CustomLogger
-from emulator import Emulator
-from message_parser import MessageParser as mp
+from .custom_logger import CustomLogger
+from .emulator import Emulator
+from .message_parser import MessageParser as mp
 
+HOST = "0.0.0.0"
+PORT = 9999
 
 class WebsocketServer:
     """
     Class for handling the websocket server and executing the commands
     """
-    def __init__(self, debug: bool = False) -> None:
-        self.debug = debug
 
+    def __init__(self, debug: bool = False) -> None:
         self.parser = mp()
         self.emulator = Emulator()
-        self.logger = CustomLogger("WebsocketServer")
+        self.logger = CustomLogger("WebsocketServer", debug)
         # Server settings (constants)
-        self.host = "0.0.0.0"
-        self.port = 9999
         # Client Info
         self.connected_ip = None
         self.connected_port = None
-        # Server status
-        self.connected = False
         # Start server
         asyncio.get_event_loop().run_until_complete(self.start())
 
@@ -36,17 +33,18 @@ class WebsocketServer:
         """
         Start the websocket server and listen for connections
         """
-        self.logger.info(f"Starting websocket server @ {self.host}:{self.port}")
-        self.server = await websockets.serve(self.handler, self.host, self.port)
+        self.logger.info(
+            f"Starting websocket server @ {HOST}:{PORT}")
+        self.server = await websockets.serve(self.handler, HOST, PORT)
 
     async def handler(self, websocket) -> None:
         """
         Handle the websocket connection, and receive messages
         """
-        self.connected = True
         self.connected_ip = websocket.remote_address[0]
         self.connected_port = websocket.remote_address[1]
-        self.logger.info(f"Client connected @ {self.connected_ip}:{self.connected_port}")
+        self.logger.info(
+            f"Client connected @ {self.connected_ip}:{self.connected_port}")
 
         while True:
             try:
@@ -62,19 +60,20 @@ class WebsocketServer:
                         self.emulator.launch_site(value)
                     elif key == "POWER":
                         self.emulator.power_option(value)
-                    elif key == "MEDIA" or key == "KEY":
-                        self.emulator.emulate_key(key, value)
+                    elif key in ("MEDIA", "KEY"):
+                        self.emulator.emulate_key(value)
                     else:
                         self.logger.error(f"Invalid key: {key}")
                 except ValueError as error:
                     self.logger.error(f"Invalid message: {error}")
 
             except websockets.exceptions.ConnectionClosed:
-                self.logger.info(f"Client disconnected @ {self.connected_ip}:{self.connected_port}")
-                self.connected = False
+                self.logger.info(
+                    f"Client disconnected @ {self.connected_ip}:{self.connected_port}")
                 self.connected_ip = None
                 self.connected_port = None
                 break
+
 
 if __name__ == "__main__":
     server = WebsocketServer()

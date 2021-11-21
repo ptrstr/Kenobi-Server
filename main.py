@@ -3,11 +3,15 @@ Main application file with the main function.
 And argument parser.
 """
 from argparse import ArgumentParser
-from os import truncate
 from helpers.websocket_server import WebsocketServer
 
 
 class Main:
+    """
+    Class Main which contains the main function.
+    And argument parser.
+    """
+
     def __init__(self) -> None:
         """
         Initialize the main class.
@@ -16,8 +20,8 @@ class Main:
         self.background = True
         self.main()
 
-
-    def parser(self):
+    @staticmethod
+    def parser():
         """
         Parse the arguments.
         Arguments:
@@ -44,9 +48,6 @@ class Main:
             self.background = True
         if args.debug:
             self.debug = True
-            pass
         else:
             # Run in foreground
-            server = WebsocketServer(debug=self.debug)
-            server.run()
-
+            WebsocketServer(debug=self.debug)

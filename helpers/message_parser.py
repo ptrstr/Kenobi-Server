@@ -1,12 +1,14 @@
 """
 Parses messages from the client and returns the appropriate response
 """
-from custom_logger import CustomLogger
+from .custom_logger import CustomLogger
+
 
 class MessageParser:
     """
     Parse raw messages received from the client
     """
+
     def __init__(self):
         self.logger = CustomLogger('MessageParser')
         self.keys = [
@@ -20,7 +22,8 @@ class MessageParser:
             "LAUNCHAPP",
         ]
 
-    def extract_key(self, message):
+    @staticmethod
+    def extract_key(message):
         """
         Returns the key of the message
         Parameters:
@@ -30,7 +33,8 @@ class MessageParser:
         """
         return message.split(':')[0]
 
-    def extract_value(self, message):
+    @staticmethod
+    def extract_value(message):
         """
         Returns the value of the message
         Parameters:
@@ -59,12 +63,10 @@ class MessageParser:
             value = self.extract_value(message)
             if self.validate_key(key):
                 return key, value
-            else:
-                self.logger.error(f"Invalid key: {key}")
-                raise ValueError(f"Invalid key: {key}")
-        else:
-            self.logger.error(f"Invalid message: {message}")
-            raise ValueError(f"Invalid data received: {message}")
+            self.logger.error(f"Invalid key: {key}")
+            raise ValueError(f"Invalid key: {key}")
+        self.logger.error(f"Invalid message: {message}")
+        raise ValueError(f"Invalid data received: {message}")
 
     def extract_x_y(self, value):
         """
@@ -75,8 +77,7 @@ class MessageParser:
             x: the x coordinate (-13.0, 0.0)
         """
         if '@' in value:
-            x, y = value.split('@')
-            return x, y
-        else:
-            self.logger.error(f"Invalid data received: {value}")
-            raise ValueError(f"Invalid data received: {value}")
+            mouse_x, mouse_y = value.split('@')
+            return mouse_x, mouse_y
+        self.logger.error(f"Invalid data received: {value}")
+        raise ValueError(f"Invalid data received: {value}")
