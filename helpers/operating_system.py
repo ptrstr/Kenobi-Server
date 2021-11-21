@@ -18,6 +18,10 @@ class OperatingSystem:
         self.is_supported_os()
 
     def __str__(self) -> str:
+        """
+        Returns the operating system name as a string.
+        instead of Object Address
+        """
         return self.platform
         
     def is_supported_os(self):
