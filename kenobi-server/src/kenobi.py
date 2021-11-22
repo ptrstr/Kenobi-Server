@@ -7,8 +7,7 @@ from argparse import ArgumentParser
 from os import path
 from shutil import rmtree
 
-from websocket_server import WebsocketServer
-
+from .websocket_server import WebsocketServer
 
 class Kenobi:
     """
@@ -39,7 +38,8 @@ class Kenobi:
                             default=False, help="Delete logs")
         return parser.parse_args()
 
-    def delete_logs(self):
+    @staticmethod
+    def delete_logs():
         """
         Delete logs folder
         """
