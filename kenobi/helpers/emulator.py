@@ -9,9 +9,8 @@ from os import system
 from playsound import playsound
 from pynput.keyboard import Controller, Key
 
-from operating_system import OperatingSystem
-
-from custom_logger import CustomLogger
+from .operating_system import OperatingSystem
+from .custom_logger import CustomLogger
 
 
 class Emulator:
@@ -59,9 +58,9 @@ class Emulator:
         Launch the app using the system command
         """
         if app.endswith(".com"):
-            self.launch_site(app)
+            self.launch_site(url=app)
         else:
-        # TEST Launch apps for other OSs
+            # TEST Launch apps for other OSs
             launch_args = {
                 'Linux': ['xdg-open'],
                 'Windows': ['start'],
@@ -86,7 +85,8 @@ class Emulator:
         else:
             print(f"Invalid ping option {value}")
 
-    def launch_site(self, url):
+    @staticmethod
+    def launch_site(url):
         """
         Launch the site using the system command
         """

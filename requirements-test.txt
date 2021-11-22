@@ -1,0 +1,5 @@
+pynput
+websockets
+playsound
+pytest
+pylint
