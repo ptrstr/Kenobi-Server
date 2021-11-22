@@ -8,9 +8,9 @@ from os import system
 from playsound import playsound
 from pynput.keyboard import Controller, Key
 
-from .operating_system import OperatingSystem
+from operating_system import OperatingSystem
 
-from .custom_logger import CustomLogger
+from custom_logger import CustomLogger
 
 
 class Emulator:

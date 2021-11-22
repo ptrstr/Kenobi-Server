@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 from os import path
 from shutil import rmtree
 
-from .websocket_server import WebsocketServer
+from websocket_server import WebsocketServer
 
 class Kenobi:
     """
