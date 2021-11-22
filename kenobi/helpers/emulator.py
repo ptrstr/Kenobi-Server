@@ -3,13 +3,14 @@ File containing class which represents the emulator.
 Controlling media, open apps and links, playing audio, etc is done here.
 """
 import webbrowser
-from os import system
+from subprocess import run
 
 from playsound import playsound
 from pynput.keyboard import Controller, Key
 
-from .operating_system import OperatingSystem
-from .custom_logger import CustomLogger
+from operating_system import OperatingSystem
+
+from custom_logger import CustomLogger
 
 
 class Emulator:
@@ -25,7 +26,7 @@ class Emulator:
         self.logger = CustomLogger(self.__class__.__name__)
         self.operating_system = OperatingSystem()
         self.keyboard = Controller()
-        self.vaild_keys = {
+        self.valid_keys = {
             "left": Key.left,
             "right": Key.right,
             "up": Key.up,
@@ -42,32 +43,33 @@ class Emulator:
             "volumedown": Key.media_volume_down
         }
 
-    def emulate_key(self, recieved_key: str):
+    def emulate_key(self, received_key: str):
         """
         Check if the key is valid, and if so
         Emulate the key using the keyboard controller
         """
-        if recieved_key in self.vaild_keys:
-            self.keyboard.press(self.vaild_keys[recieved_key])
+        if received_key in self.valid_keys:
+            self.keyboard.press(self.valid_keys[received_key])
         else:
-            self.logger.error(f"Invalid key {recieved_key}")
+            self.logger.error(f"Invalid key {received_key}")
 
     def launch_app(self, app: str):
         """
         Launch the app using the system command
         """
         if app.endswith(".com"):
-            self.launch_site(url=app)
+            self.launch_site(app)
         else:
-            # TEST Launch apps for other OSs
-            if self.operating_system.platform == "Linux":
-                system(f"xdg-open {app}")
-            elif self.operating_system.platform == "Windows":
-                system(f"start {app}")
-            elif self.operating_system.platform == "Darwin":
-                print("opening in mac")
-                system(f"open -a {app}")
-            else:
+        # TEST Launch apps for other OSs
+            launch_args = {
+                'Linux': ['xdg-open'],
+                'Windows': ['start'],
+                'Darwin': ['open', '-a']
+            }
+
+            try:
+                run(launch_args[self.operating_system.platform] + [app])
+            except KeyError:
                 print(f"Invalid OS \"{self.operating_system}\"")
 
     @staticmethod
@@ -83,8 +85,7 @@ class Emulator:
         else:
             print(f"Invalid ping option {value}")
 
-    @staticmethod
-    def launch_site(url):
+    def launch_site(self, url):
         """
         Launch the site using the system command
         """
