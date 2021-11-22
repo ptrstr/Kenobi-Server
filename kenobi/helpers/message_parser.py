@@ -60,10 +60,13 @@ class MessageParser:
         if len(message.split(':')) == 2:
             key = self.extract_key(message)
             value = self.extract_value(message)
+
             if self.validate_key(key):
                 return key, value
+
             self.logger.error(f"Invalid key: {key}")
             raise ValueError(f"Invalid key: {key}")
+            
         self.logger.error(f"Invalid message: {message}")
         raise ValueError(f"Invalid data received: {message}")
 
