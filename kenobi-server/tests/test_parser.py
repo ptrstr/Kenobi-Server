@@ -11,6 +11,5 @@ def test_parse_message_valid_message():
     """
     message = "Hello, World!"
     parser = MessageParser()
-    parsed_message = parser.parse_message(message)
+    parsed_message = parser.parse(message)
     assert parsed_message == "Hello, World!"
-

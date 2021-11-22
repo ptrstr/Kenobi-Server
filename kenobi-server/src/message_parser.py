@@ -1,7 +1,7 @@
 """
 Parses messages from the client and returns the appropriate response
 """
-from custom_logger import CustomLogger
+from .custom_logger import CustomLogger
 
 
 class MessageParser:
