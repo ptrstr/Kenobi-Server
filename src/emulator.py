@@ -1,5 +1,6 @@
 """
-Key emulating class
+File containing class which represents the emulator.
+Controlling media, open apps and links, playing audio, etc is done here.
 """
 import webbrowser
 from subprocess import run
@@ -7,9 +8,9 @@ from subprocess import run
 from playsound import playsound
 from pynput.keyboard import Controller, Key
 
-from helpers.operating_system import OperatingSystem
+from operating_system import OperatingSystem
 
-from .custom_logger import CustomLogger
+from custom_logger import CustomLogger
 
 
 class Emulator:
@@ -127,7 +128,6 @@ class Emulator:
             system("shutdown -l")
         elif self.operating_system.platform == "Darwin":
             system("shutdown -l")
-
 
     def restart(self):
         """

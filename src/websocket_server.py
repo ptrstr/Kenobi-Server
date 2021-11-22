@@ -6,12 +6,13 @@ import asyncio
 
 import websockets
 
-from .custom_logger import CustomLogger
-from .emulator import Emulator
-from .message_parser import MessageParser as mp
+from custom_logger import CustomLogger
+from emulator import Emulator
+from message_parser import MessageParser as mp
 
 HOST = "0.0.0.0"
 PORT = 9999
+
 
 class WebsocketServer:
     """
@@ -21,7 +22,7 @@ class WebsocketServer:
     def __init__(self, debug: bool = False) -> None:
         self.parser = mp()
         self.emulator = Emulator()
-        self.logger = CustomLogger("WebsocketServer", debug)
+        self.logger = CustomLogger(self.__class__.__name__, debug)
         # Server settings (constants)
         # Client Info
         self.connected_ip = None
