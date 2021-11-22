@@ -4,6 +4,7 @@ Controlling media, open apps and links, playing audio, etc is done here.
 """
 import webbrowser
 from subprocess import run
+from os import system
 
 from playsound import playsound
 from pynput.keyboard import Controller, Key
