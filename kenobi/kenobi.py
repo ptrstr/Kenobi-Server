@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 from os import path
 from shutil import rmtree
 
-from websocket_server import WebsocketServer
+from helpers import websocket_server
 
 class Kenobi:
     """
@@ -60,7 +60,7 @@ class Kenobi:
             self.delete_logs()
             return
 
-        WebsocketServer(debug=self.debug)
+        websocket_server.WebsocketServer(debug=self.debug)
         asyncio.get_event_loop().run_forever()
 
 
